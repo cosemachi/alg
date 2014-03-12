@@ -16,6 +16,22 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 
 	private Node root;
 
+	public boolean checkBST() {
+		return this.checkBST(this.root);
+	}
+
+	private boolean checkBST(final Node node) {
+		if (node == null)
+			return true;
+		if (node.left != null && node.left.key.compareTo(node.key) > 0)
+			return false;
+		if (node.right != null && node.right.key.compareTo(node.key) < 0)
+			return false;
+		if (!this.checkBST(node.right) || !this.checkBST(node.left))
+			return false;
+		return true;
+	}
+
 	public void delete(final Key key) {
 		this.root = this.delete(this.root, key);
 	}
@@ -72,6 +88,29 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 			return node.val;
 	}
 
+	public int getChildrenNumber() {
+		return this.getChildrenNumber(this.root);
+	}
+
+	public int getChildrenNumber(final Node node) {
+		int sum = 0;
+		if (node.left == null && node.right == null) {
+			return 0;
+		} else if (node.left == null) {
+			sum++;
+			return sum += this.getChildrenNumber(node.right);
+		} else if (node.right == null) {
+			sum++;
+			return sum += this.getChildrenNumber(node.right);
+		} else {
+			return sum += this.getChildrenNumber(node.right) + this.getChildrenNumber(node.left);
+		}
+	}
+
+	public Value getRootValue() {
+		return this.root.val;
+	}
+
 	public Key max() {
 		return this.max(this.root).key;
 	}
@@ -109,7 +148,7 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 			node.right = this.put(node.right, key, val);
 		else
 			node.val = val;
-		node.N = this.size(node.left) + this.size(node.right);
+		node.N = this.size(node.left) + this.size(node.right) + 1;
 		return node;
 	}
 
