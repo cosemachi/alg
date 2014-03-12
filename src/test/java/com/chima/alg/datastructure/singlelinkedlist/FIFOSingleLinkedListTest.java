@@ -1,15 +1,13 @@
-package com.chima.alg.datastructure;
+package com.chima.alg.datastructure.singlelinkedlist;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
-public class SingleLinkedListTest {
-	private SingleLinkedList<Integer> testObj = null;
+public class FIFOSingleLinkedListTest {
+	private FIFOSingleLinkedList<Integer> testObj = null;
 
 	@Before
 	public void before() {
-		this.testObj = new SingleLinkedList<Integer>();
+		this.testObj = new FIFOSingleLinkedList<Integer>();
 	}
 
 	@Test

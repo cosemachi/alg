@@ -1,6 +1,6 @@
-package com.chima.alg.datastructure;
+package com.chima.alg.datastructure.singlelinkedlist;
 
-public class SingleLinkedList<Value> {
+public class FIFOSingleLinkedList<Value> {
 	// First in first out single linked list
 	private class Node {
 		private final Value value;
@@ -8,6 +8,7 @@ public class SingleLinkedList<Value> {
 
 		public Node(final Value value) {
 			this.value = value;
+			this.next = null;
 		}
 	}
 
@@ -15,7 +16,7 @@ public class SingleLinkedList<Value> {
 	private Node last;
 	private int size;
 
-	public SingleLinkedList() {
+	public FIFOSingleLinkedList() {
 		this.first = null;
 		this.last = null;
 		this.size = 0;
@@ -38,15 +39,19 @@ public class SingleLinkedList<Value> {
 
 	public void insert(final Value val) {
 		final Node node = new Node(val);
-		Node p = this.first;
-		if (p == null) {
+
+		if (this.first == null) {
 			// current link is null
-			p = node;
+			this.first = node;
+			this.first.next = null;
+		} else {
+			// first is not null
+			Node p = this.first;
+			while (p.next != null) {
+				p = p.next;
+			}
+			p.next = node;
 		}
-		while (p.next != null) {
-			p = p.next;
-		}
-		p.next = node;
 		this.last = node;
 		this.size++;
 	}
