@@ -103,7 +103,8 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 			sum++;
 			return sum += this.getChildrenNumber(node.right);
 		} else {
-			return sum += this.getChildrenNumber(node.right) + this.getChildrenNumber(node.left);
+			return sum += this.getChildrenNumber(node.right)
+					+ this.getChildrenNumber(node.left);
 		}
 	}
 
@@ -161,5 +162,18 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 			return 0;
 		else
 			return node.N;
+	}
+
+	public int hight() {
+		if (root != null)
+			return Math.max(this.hight(root.left), this.hight(root.right)) + 1;
+		return 0;
+	}
+
+	private int hight(final Node node) {
+		if (node == null)
+			return 0;
+		else
+			return Math.max(this.hight(node.left), this.hight(node.right)) + 1;
 	}
 }

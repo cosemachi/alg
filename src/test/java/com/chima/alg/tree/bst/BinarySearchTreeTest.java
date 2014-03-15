@@ -1,8 +1,6 @@
 package com.chima.alg.tree.bst;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 public class BinarySearchTreeTest {
 
@@ -25,6 +23,7 @@ public class BinarySearchTreeTest {
 		Assert.assertEquals(6, this.testObj.size());
 		Assert.assertEquals(5, this.testObj.getChildrenNumber());
 		Assert.assertEquals(true, this.testObj.checkBST());
+		System.out.println(this.testObj.size());
 	}
 
 	@Test
@@ -38,12 +37,19 @@ public class BinarySearchTreeTest {
 	@Test
 	public void test_max_function() {
 		this.testObj.put("1", 1);
+		System.out.println("height:" + this.testObj.hight());
 		this.testObj.put("3", 3);
+		System.out.println("height:" + this.testObj.hight());
 		this.testObj.put("5", 5);
+		System.out.println("height:" + this.testObj.hight());
 		this.testObj.put("2", 2);
+		System.out.println("height:" + this.testObj.hight());
 		this.testObj.put("6", 6);
+		System.out.println("height:" + this.testObj.hight());
 		this.testObj.put("4", 4);
+		System.out.println("height:" + this.testObj.hight());
 
 		Assert.assertEquals("6", this.testObj.max());
+		System.out.println("height:" + this.testObj.hight());
 	}
 }
