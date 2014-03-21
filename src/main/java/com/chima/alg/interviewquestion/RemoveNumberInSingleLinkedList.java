@@ -43,32 +43,61 @@ public class RemoveNumberInSingleLinkedList {
 	 * @return
 	 */
 	public Node removeNumeric() {
+		if (this.root == null) {
+			return null;
+		}
 
-		Node r = this.root;
-
-		while (this.isNumeric(r) && r != null)
-			// first find out the first not numeric char
-			r = r.next;
-		if (r == null || r.next == null)
-			// No un-numeric char left
-			return r;
-		else {
-			Node p = r.next;
-			while (p.next != null) {
-				if (this.isNumeric(p)) {
-					p = p.next;
-				} else {
-					p.next = this.root;
-					this.root = p;
+		Node prevNode = null;
+		Node currNode = this.root;
+		while (currNode != null) {
+			if (this.isNumeric(currNode)) {
+				if (prevNode != null) {
+					prevNode.next = currNode.next;
 				}
+				currNode = currNode.next;
+			} else {
+				if (prevNode != null) {
+					prevNode.next = currNode;
+				}
+				prevNode = currNode;
+				currNode = currNode.next;
 
 			}
-			return r;
 		}
+		if (prevNode == null)
+			return this.root = null;
+		return this.root;
+
+		// Node r = this.root;
+		//
+		// while (this.isNumeric(r) && r != null)
+		// // first find out the first not numeric char
+		// r = r.next;
+		// if (r == null || r.next == null)
+		// // No un-numeric char left
+		// return r;
+		// else {
+		// Node p = r.next;
+		// Node prev = r;
+		// while (p.next != null) {
+		// if (this.isNumeric(p)) {
+		// // p is number
+		// prev.next = p.next;
+		// p = p.next;
+		// } else {
+		// prev = p;
+		// p = p.next;
+		// }
+		//
+		// }
+		// return r;
+		// }
 	}
 
 	@Override
 	public String toString() {
+		if (this.root == null)
+			return "No element inside";
 		return this.toString(this.root);
 	}
 
