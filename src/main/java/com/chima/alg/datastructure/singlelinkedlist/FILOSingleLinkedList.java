@@ -35,4 +35,29 @@ public class FILOSingleLinkedList<Value> {
 		this.first = node;
 		this.size++;
 	}
+
+	public Value getFirst() {
+		if (this.first == null)
+			return null;
+		else
+			return this.first.value;
+
+	}
+
+	@Override
+	public String toString() {
+		final StringBuffer sb = new StringBuffer();
+		if (this.first == null)
+			return "Empty list";
+		Node n = this.first;
+		while (n != null) {
+			sb.append(n.value + " ");
+			n = n.next;
+		}
+		return sb.toString();
+	}
+
+	public boolean isEmpty() {
+		return this.first == null ? true : false;
+	}
 }
