@@ -1,4 +1,4 @@
-package com.chima.alg.interviewquestion;
+package com.chima.alg.smalltest;
 
 /**
  * Input: Given a single linked list of Characters, Require: Remove all numeric

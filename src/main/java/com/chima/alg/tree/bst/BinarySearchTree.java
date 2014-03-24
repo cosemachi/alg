@@ -1,8 +1,9 @@
 package com.chima.alg.tree.bst;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.chima.alg.datastructure.singlelinkedlist.*;
+import com.chima.alg.datastructure.singlelinkedlist.FIFOSingleLinkedList;
 
 public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 	private class Node {
@@ -76,6 +77,22 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 		return x;
 	}
 
+	public void deleteMin() throws Exception {
+		if (this.root == null)
+			throw new Exception("Nothing to delete, the tree is empty");
+		this.root = this.deleteMin(this.root);
+	}
+
+	private Node deleteMin(final Node x) throws Exception {
+		if (x.left == null)
+			// there is nothing smaller than x, get the x's right child, if x
+			// have no right child, then return null
+			return x.right;
+		x.left = this.deleteMin(x.left);
+		x.N = this.size(x.left) + this.size(x.right) + 1;
+		return x;
+	}
+
 	public Value find(final Key key) {
 		return this.find(this.root, key);
 	}
@@ -91,22 +108,6 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 			return this.find(node.left, key);
 		else
 			return node.val;
-	}
-
-	public void deleteMin() throws Exception {
-		if (this.root == null)
-			throw new Exception("Nothing to delete, the tree is empty");
-		this.root = this.deleteMin(this.root);
-	}
-
-	private Node deleteMin(final Node x) throws Exception {
-		if (x.left == null)
-			// there is nothing smaller than x, get the x's right child, if x
-			// have no right child, then return null
-			return x.right;
-		x.left = this.deleteMin(x.left);
-		x.N = this.size(x.left) + this.size(x.right) + 1;
-		return x;
 	}
 
 	public Value get(final Key key) {
@@ -146,51 +147,6 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 		}
 	}
 
-	public Value getRootValue() {
-		return this.root.val;
-	}
-
-	public Key max() {
-		return this.max(this.root).key;
-	}
-
-	private Node max(final Node node) {
-		// Keep go to right until no left node
-		if (node.right == null)
-			return node;
-		return this.max(node.right);
-	}
-
-	public Key min() {
-		return this.min(this.root).key;
-	}
-
-	private Node min(final Node node) {
-		// Keep go to left until no left node
-		if (node.left == null)
-			return node;
-		return this.min(node.left);
-	}
-
-	public void put(final Key key, final Value val) {
-		this.root = this.put(this.root, key, val);
-	}
-
-	private Node put(final Node node, final Key key, final Value val) {
-		if (node == null)
-			return new Node(key, val, 1);
-		final int cmp = key.compareTo(node.key);
-		if (cmp < 0)
-			// put the node to the left side
-			node.left = this.put(node.left, key, val);
-		else if (cmp > 0)
-			node.right = this.put(node.right, key, val);
-		else
-			node.val = val;
-		node.N = this.size(node.left) + this.size(node.right) + 1;
-		return node;
-	}
-
 	public Value getKNode(final int k) throws Exception {
 		if (this.root == null)
 			throw new Exception("The tree is empty!!");
@@ -210,27 +166,20 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 		} else {
 			if (k == node.left.N + 1)
 				return node.val;
-			else if (k < node.left.N)
+			else if (k <= node.left.N)
 				return this.getKNode(node.left, k);
 			else
-				return this.getKNode(node.right, k - node.left.N + 1);
+				return this.getKNode(node.right, k - node.left.N - 1);
 		}
 	}
 
-	public int size() {
-		return this.size(this.root);
-	}
-
-	public int size(final Node node) {
-		if (node == null)
-			return 0;
-		else
-			return node.N;
+	public Value getRootValue() {
+		return this.root.val;
 	}
 
 	public int hight() {
-		if (root != null)
-			return Math.max(this.hight(root.left), this.hight(root.right)) + 1;
+		if (this.root != null)
+			return Math.max(this.hight(this.root.left), this.hight(this.root.right)) + 1;
 		return 0;
 	}
 
@@ -268,58 +217,25 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 		this.inOrder(node.right, list);
 	}
 
-	/**
-	 * This is pre order travel tree.
-	 * 
-	 * <pre>
-	 * preorder(node) 
-	 * 		if node == null then return
-	 * 		visit(node) 
-	 * 		preorder(node.left) 
-	 * 		preorder(node.right)
-	 * </pre>
-	 * 
-	 * @return
-	 */
-	public List<Value> preOrder() {
-		final List<Value> list = new ArrayList<Value>();
-		this.preOrder(this.root, list);
-		return list;
+	public boolean isBST() {
+		final Key key = this.min();
+		return this.isBST(this.root, key);
 	}
 
-	private void preOrder(final Node node, final List<Value> list) {
+	private boolean isBST(final Node node, Key prev) {
 		if (node == null)
-			return;
-		list.add(node.val);
-		this.preOrder(node.left, list);
-		this.preOrder(node.right, list);
-	}
+			return true;
 
-	/**
-	 * This is the post order travel.
-	 * 
-	 * <pre>
-	 * postorder(node)
-	 * 		if node == null then return
-	 * 		postorder(node.left)
-	 * 		postorder(node.right)
-	 * 		visit(node)
-	 * </pre>
-	 * 
-	 * @return
-	 */
-	public List<Value> postOrder() {
-		final List<Value> list = new ArrayList<Value>();
-		this.postOrder(this.root, list);
-		return list;
-	}
-
-	private void postOrder(final Node node, final List<Value> list) {
-		if (node == null)
-			return;
-		this.postOrder(node.left, list);
-		this.postOrder(node.right, list);
-		list.add(node.val);
+		if (this.isBST(node.left, prev)) {
+			if (node.key.compareTo(prev) >= 0) {
+				prev = node.key;
+				return this.isBST(node.right, prev);
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -355,5 +271,111 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 				queue.insert(node.right);
 		}
 		return list;
+	}
+
+	public Key max() {
+		return this.max(this.root).key;
+	}
+
+	private Node max(final Node node) {
+		// Keep go to right until no left node
+		if (node.right == null)
+			return node;
+		return this.max(node.right);
+	}
+
+	public Key min() {
+		return this.min(this.root).key;
+	}
+
+	private Node min(final Node node) {
+		// Keep go to left until no left node
+		if (node.left == null)
+			return node;
+		return this.min(node.left);
+	}
+
+	/**
+	 * This is the post order travel.
+	 * 
+	 * <pre>
+	 * postorder(node)
+	 * 		if node == null then return
+	 * 		postorder(node.left)
+	 * 		postorder(node.right)
+	 * 		visit(node)
+	 * </pre>
+	 * 
+	 * @return
+	 */
+	public List<Value> postOrder() {
+		final List<Value> list = new ArrayList<Value>();
+		this.postOrder(this.root, list);
+		return list;
+	}
+
+	private void postOrder(final Node node, final List<Value> list) {
+		if (node == null)
+			return;
+		this.postOrder(node.left, list);
+		this.postOrder(node.right, list);
+		list.add(node.val);
+	}
+
+	/**
+	 * This is pre order travel tree.
+	 * 
+	 * <pre>
+	 * preorder(node) 
+	 * 		if node == null then return
+	 * 		visit(node) 
+	 * 		preorder(node.left) 
+	 * 		preorder(node.right)
+	 * </pre>
+	 * 
+	 * @return
+	 */
+	public List<Value> preOrder() {
+		final List<Value> list = new ArrayList<Value>();
+		this.preOrder(this.root, list);
+		return list;
+	}
+
+	private void preOrder(final Node node, final List<Value> list) {
+		if (node == null)
+			return;
+		list.add(node.val);
+		this.preOrder(node.left, list);
+		this.preOrder(node.right, list);
+	}
+
+	public void put(final Key key, final Value val) {
+		this.root = this.put(this.root, key, val);
+	}
+
+	private Node put(final Node node, final Key key, final Value val) {
+		if (node == null)
+			return new Node(key, val, 1);
+		final int cmp = key.compareTo(node.key);
+		if (cmp < 0)
+			// put the node to the left side
+			node.left = this.put(node.left, key, val);
+		else if (cmp > 0)
+			node.right = this.put(node.right, key, val);
+		else
+			node.val = val;
+		node.N = this.size(node.left) + this.size(node.right) + 1;
+		return node;
+	}
+
+	public int size() {
+		return this.size(this.root);
+	}
+
+	public int size(final Node node) {
+		if (node == null)
+			return 0;
+		else
+			return node.N;
 	}
 }

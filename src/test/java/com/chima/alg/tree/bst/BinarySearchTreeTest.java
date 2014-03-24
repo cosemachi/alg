@@ -1,8 +1,10 @@
 package com.chima.alg.tree.bst;
 
-import java.util.*;
+import java.util.List;
 
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 public class BinarySearchTreeTest {
 
@@ -49,6 +51,34 @@ public class BinarySearchTreeTest {
 	}
 
 	@Test
+	public void test_delete_min_node() throws Exception {
+		final int[] input = { 5 };
+		this.createBST(input);
+		this.testObj.deleteMin();
+		final List<Integer> inOrderResult = this.testObj.inOrder();
+		Assert.assertEquals("[]", inOrderResult.toString());
+	}
+
+	@Test
+	public void test_delete_node() throws Exception {
+		final int[] input = { 5, 3, 1, 2, 6, 4, 7 };
+		this.createBST(input);
+		this.testObj.delete("3");
+		final List<Integer> inOrderResult = this.testObj.inOrder();
+		Assert.assertEquals("[1, 2, 4, 5, 6, 7]", inOrderResult.toString());
+	}
+
+	@Test
+	public void test_get_k_value() throws Exception {
+		final int[] input = { 5, 3, 1, 2, 6, 4, 7, 9, 8 };
+		this.createBST(input);
+		final List<Integer> inOrderResult = this.testObj.inOrder();
+		for (int i = 1; i < 10; i++)
+			Assert.assertEquals(new Integer(i), this.testObj.getKNode(i));
+		Assert.assertEquals("[1, 2, 3, 4, 5, 6, 7, 8, 9]", inOrderResult.toString());
+	}
+
+	@Test
 	public void test_height_and_height_function() {
 		this.testObj.put("1", 1);// height is 1;
 		Assert.assertEquals(1, this.testObj.hight());
@@ -80,19 +110,12 @@ public class BinarySearchTreeTest {
 	}
 
 	@Test
-	public void test_preOrder_travel_tree() {
+	public void test_is_BST() {
 		final int[] input = { 5, 3, 1, 2, 6, 4, 7 };
 		this.createBST(input);
-		final List<Integer> preOrderResult = this.testObj.preOrder();
-		Assert.assertEquals("[5, 3, 1, 2, 4, 6, 7]", preOrderResult.toString());
-	}
-
-	@Test
-	public void test_postOrder_travel_tree() {
-		final int[] input = { 5, 3, 1, 2, 6, 4, 7 };
-		this.createBST(input);
-		final List<Integer> postOrderResult = this.testObj.postOrder();
-		Assert.assertEquals("[2, 1, 4, 3, 7, 6, 5]", postOrderResult.toString());
+		final List<Integer> inOrderResult = this.testObj.inOrder();
+		Assert.assertEquals("[1, 2, 3, 4, 5, 6, 7]", inOrderResult.toString());
+		Assert.assertEquals(true, this.testObj.isBST());
 	}
 
 	@Test
@@ -104,20 +127,18 @@ public class BinarySearchTreeTest {
 	}
 
 	@Test
-	public void test_delete_node() throws Exception {
+	public void test_postOrder_travel_tree() {
 		final int[] input = { 5, 3, 1, 2, 6, 4, 7 };
 		this.createBST(input);
-		this.testObj.delete("3");
-		final List<Integer> inOrderResult = this.testObj.inOrder();
-		Assert.assertEquals("[1, 2, 4, 5, 6, 7]", inOrderResult.toString());
+		final List<Integer> postOrderResult = this.testObj.postOrder();
+		Assert.assertEquals("[2, 1, 4, 3, 7, 6, 5]", postOrderResult.toString());
 	}
 
 	@Test
-	public void test_delete_min_node() throws Exception {
-		final int[] input = { 5 };
+	public void test_preOrder_travel_tree() {
+		final int[] input = { 5, 3, 1, 2, 6, 4, 7 };
 		this.createBST(input);
-		this.testObj.deleteMin();
-		final List<Integer> inOrderResult = this.testObj.inOrder();
-		Assert.assertEquals("[]", inOrderResult.toString());
+		final List<Integer> preOrderResult = this.testObj.preOrder();
+		Assert.assertEquals("[5, 3, 1, 2, 4, 6, 7]", preOrderResult.toString());
 	}
 }

@@ -1,7 +1,9 @@
-package com.chima.alg.interviewquestion;
+package com.chima.alg.smalltest;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.chima.alg.smalltest.RemoveNumberInSingleLinkedList;
 
 public class RemoveNumberInSingleLinkedListTest {
 	private RemoveNumberInSingleLinkedList testObj = null;
