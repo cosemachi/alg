@@ -1,9 +1,8 @@
 package com.chima.alg.tree.bst;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import com.chima.alg.datastructure.singlelinkedlist.FIFOSingleLinkedList;
+import com.chima.alg.datastructure.singlelinkedlist.*;
 
 public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 	private class Node {
@@ -218,24 +217,26 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 	}
 
 	public boolean isBST() {
-		final Key key = this.min();
-		return this.isBST(this.root, key);
+		// final Key key = this.min();
+		final LinkedList<Key> list = new LinkedList<Key>();
+		return this.isBST(this.root, list);
 	}
 
-	private boolean isBST(final Node node, Key prev) {
+	private boolean isBST(final Node node, final LinkedList<Key> list) {
 		if (node == null)
 			return true;
 
-		if (this.isBST(node.left, prev)) {
-			if (node.key.compareTo(prev) >= 0) {
-				prev = node.key;
-				return this.isBST(node.right, prev);
-			} else {
-				return false;
+		if (this.isBST(node.left, list)) {
+			if (list.size() != 0) {
+				System.out.println("Call method:isBST(" + node.val + ", " + list.getLast() + ").");
+				if (node.key.compareTo(list.getLast()) < 0) {
+					return false;
+				}
 			}
-		} else {
+			list.add(node.key);
+			return this.isBST(node.right, list);
+		} else
 			return false;
-		}
 	}
 
 	/**
